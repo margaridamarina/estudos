@@ -27,7 +27,7 @@ for(let i = 1; i < 5; i++){
 */
 
 
-/*let relatorio=""; // só pra iniciar a variável
+/*let relatorio=""; // só pra iniciar a variavel
 
 for(let info in cliente) {
     if(typeof cliente[info] === "object" || typeof cliente[info] === "function")

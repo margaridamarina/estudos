@@ -20,14 +20,13 @@ export class Conta {
         return this._cliente;
     }
 
-    get saldo() {
+    get saldo() { 
         return this._saldo;
     }
 
     sacar(valor) {
-        let taxa = 1
-        return this._sacar(valor, taxa);
-        
+        //método abstrato feito para ser sobrescrito por isso está vazio
+        throw new Error("O método Sacar da Conta é abstrato, crie um método sacar no tipo de conta que deseja")
     }
 
     _sacar(valor, taxa) {

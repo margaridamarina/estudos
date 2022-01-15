@@ -91,7 +91,7 @@ const DOM = {
         // uma função pode existir solta, se ela estiver dentro de um objeto é um método
         const html = `
             <td class="description">${transaction.description}</td>
-            <td class="expense">${amount}</td>
+            <td class="${CSSclass}">${amount}</td>
             <td class="date">${transaction.date}</td>
             <td>
                 <img onclick="Transaction.remove(${index})" src="./assets/minus.svg" alt="Remover transação">
@@ -125,8 +125,8 @@ const DOM = {
 
 const Utils = {
     formatAmount(value) {
-        value = Number(value.replace(/\,\./g, "")) * 100 //nao precisava substituir ja q na conta o . e a , somem
-        return value
+        value = value * 100 
+        return Math.round(value)
     },
 
     formatDate(date) {
@@ -170,7 +170,7 @@ const Form = {
     validateFields() { // verificar se todas as informacoes foram preechidas
         let { description, amount, date } = Form.getValues()
         if (description.trim() === "" || amount.trim() === "" || date.trim() === "") {
-            // throw new Error ("Por favor, preencha todos os campos!")
+            throw new Error ("Por favor, preencha todos os campos!")
         }
     },
 

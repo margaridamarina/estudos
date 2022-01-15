@@ -191,11 +191,11 @@ td.description{
 }
 
 td.income{
-    color:#12a454;
+    color: #12a454;
 }
 
 td.expense{
-    color:var (--red);
+    color: var(--red);
 }
 
 /* MODAL */

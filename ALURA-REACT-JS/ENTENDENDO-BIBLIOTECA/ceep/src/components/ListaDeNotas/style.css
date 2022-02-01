@@ -6,11 +6,12 @@
   list-style-type: none;
   padding-left: 24px;
   padding-top: 24px;
-  background-color: orange;
+  background-color: #B96A6A;
 }
 .lista-notas_item {
   margin: 12px;
   max-width: 240px;
   max-height: 400px;
   display: inline;
+  color:rgb(216, 207, 207);
 }

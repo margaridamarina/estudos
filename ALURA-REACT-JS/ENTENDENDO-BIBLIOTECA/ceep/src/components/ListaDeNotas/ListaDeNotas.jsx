@@ -10,12 +10,21 @@ export class ListaDeNotas extends Component {
 
   render() {
     return (
-      <ul className="lista-notas">
-        {this.props.notas.map((nota, index) => {
+      <ul className="lista-notas"> 
+        {this.props.notas.map((nota, index) => { // Quero iterar sobre um array de notas, e esse array vai exibir para mim, vai ter a própria nota que quero exibir. 
+        //Tudo que estiver entre chaves dentro do return, com essa sintaxe parecida com html, vai ser interpretado como JavaScript, e dessa maneira conseguimos colocar os loops e fazer as interações que a gente precisar, inclusive chamar funções e assim por diante.
+        //O jsx é uma extensão do JavaScript, mas não me deixa fazer esse tipo de for. Tem algumas limitações. Não é tudo do JavaScript que você vai conseguir fazer. Se tiver uma função para chamar aqui dentro, poderia chamar numa boa. E se quero percorrer uma lista, ainda mais uma lista que me desse as categorias, posso usar um array e as funções de array para isso.
+        //vai pegar cada um desses itens e vai chamar uma função usando o item como parâmetro
+        //Se eu usasse outra função que existe aqui para iterar sobre um array que é o for it, ele não me dá um erro, mas também não vai desenhar, porque apesar de estar retornando aqui, o for it não está juntando numa lista para passar para a ul, então tenho que usar o map para desenhar bonitinho.
           return (
-            <li className="lista-notas_item" key={index}>
-              <CardNota titulo={nota.titulo} texto={nota.texto} />
-            </li>
+            <li className="lista-notas_item" key={index}> 
+            {/*Cada filho de lista deve ter uma chave única. Essa chave é uma propriedade que a gente tem que colocar na nossa lista quando estamos renderizando na parte de loops. A gente coloca ela como se fosse um atributo que nem a gente estava colocando no JavaScript, no html. 
+              
+              Ele quer que esse atributo seja único para cada elemento que ele está renderizando aqui, isso porque facilita o JavaScript e o react mais para frente entender quais elementos sofrerão alteração ou não e quais ele tem que redesenhar. Ele precisa dessa key porque usa ela para identificar quais são os elementos em cada chave, que tem que ser única justamente por ser um identificador, e se esse elemento sofre alguma alteração o react consegue saber qual ele tem que redesenhar e não redesenha a lista inteira dessa maneira.
+              
+              Vou aproveitar que o map passa o index também e vou usar esse index como identificador. Minha key vai ser igual o index do array. Como estou usando uma variável, coloco que atribuo essa chave com o valor dessa variável index que estou retornando do map.*/}
+              <CardNota titulo={nota.titulo} texto={nota.texto} /> 
+            </li>//Assim estou recebendo nas propriedades o array de notas que veio do pai, que é o estado do map, estou iterando a partir do map e pegando cada uma dessas, para cada nota vou criar uma li, e dentro dessa li vou pegar o card notas e passar para ele como propriedade o título e o texto. 
           )
         })}
       </ul>
@@ -24,10 +33,3 @@ export class ListaDeNotas extends Component {
 }
 
 export default ListaDeNotas
-//A gente precisa colocar essa key, essa chave para identificar os elementos da lista. Vou aproveitar que o map passa o index também e vou usar esse index como identificador. Minha key vai ser igual o index do array. Como estou usando uma variável, coloco que atribuo essa chave com o valor dessa variável index que estou retornando do map.
-
-//Estou recebendo um parâmetro e abri o corpo da função. Vou precisar retornar o elemento que quero que ele desenhe, renderize para mim. Vou dar um return, abrir os parênteses porque quero que seja um retorno de múltiplas linhas, e aqui dentro vou colar a li. Se eu formatar ele vai quebrar de novo a linha e temos para cada item aqui vou iterar eles, passar para dentro de uma nota, passar como um parâmetro chamado nota para uma função anônima, e dentro dela vou retornar uma lista com uma div e um card nota.
-
-//Conseguimos iterar sobre arrays, chamar funções do JavaScript, e dentro dessa sintaxe, mas lembrando que algumas operações não vão fazer sentido, não consigo chamar um for diretamente. Preciso ter um array e iterar sobre esse array, lembrando que o map sempre devolve uma lista.
-
-//Ele está pegando cada um dos retornos, jogando dentro de uma lista e devolvendo uma lista, um array de listas para a ul, para conseguir aí sim renderizar. Se eu usasse outra função que existe aqui para iterar sobre um array que é o forEach, ele não me dá um erro, mas também não vai desenhar, porque apesar de estar retornando aqui, o forEach não está juntando numa lista para passar para a ul, então tenho que usar o map para desenhar bonitinho

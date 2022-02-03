@@ -58,3 +58,4 @@ export class FormularioCadastro extends Component {
 }
 
 export default FormularioCadastro
+

@@ -5,7 +5,6 @@
   grid-template-columns: auto auto auto auto auto;
   list-style-type: none;
   padding-left: 24px;
-  padding-top: 24px;
   background-color: #B96A6A;
 }
 .lista-notas_item {
@@ -13,5 +12,5 @@
   max-width: 240px;
   max-height: 400px;
   display: inline;
-  color:rgb(216, 207, 207);
+  color:rgb(230, 223, 223);
 }

@@ -5,3 +5,7 @@
   --fundo: pink;
   --fundo-detalhes: yellow;
 }
+
+.conteudo-principal{
+  flex-grow:3;
+}

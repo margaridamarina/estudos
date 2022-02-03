@@ -4,7 +4,7 @@ import {ReactComponent as DeleteSVG} from "../../assets/img/delete.svg"
 
 class CardNota extends Component {
   apagar(){
-    const indice = this.props.indice;
+    const indice = this.props.indice; // Estou pegando na propriedade que chamei de índice, que recebi, minha lista de notas está passando essa propriedade e estou atribuindo essa variável, porque quando chamo minha função de apagar nota consigo passar esse índice para ele saber quem é o card e apagar só o card certo.
     this.props.apagarNota(indice);
   }
   

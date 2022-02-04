@@ -30,6 +30,7 @@ export class ListaDeNotas extends Component {
                 apagarNota={this.props.apagarNota}
                 titulo={nota.titulo}
                 texto={nota.texto}
+                categoria={nota.categoria}
               />
             </li>
             //Assim estou recebendo nas propriedades o array de notas que veio do pai, que é o estado do map, estou iterando a partir do map e pegando cada uma dessas, para cada nota vou criar uma li, e dentro dessa li vou pegar o card notas e passar para ele como propriedade o título e o texto.

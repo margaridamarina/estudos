@@ -27,9 +27,9 @@ class ListaDeCategorias extends Component {
           type="text"
           className="lista-categorias_input"
           placeholder="Adicionar categoria"
-          onKeyUp={this._handleEventoInput.bind(this)}
-        />
-      </section>
+          onKeyUp={this._handleEventoInput.bind(this)} 
+        /> 
+      </section> //No onKeyUp ele está recebendo essa função, a referência para função de handler de evento de input e aí ele vai vir aqui e executar essa função quando aquele evento acontecer.
     )
   }
 }

@@ -7,8 +7,16 @@ export class FormularioCadastro extends Component {
     super(props)//uma palavra especial que serve para fazer injeção de dependências e passar coisas dinamicamente para a classe, na instanciação dela
     this.titulo = '' 
     this.texto = ''
+    this.categoria = "Sem categoria"
   }
   //Vou declarar esses três métodos como sendo privados, já que não quero que nenhuma instância fora dessa classe consiga chamar. 
+  
+  _handleMudancaCategoria(evento){
+    evento.stopPropagation();
+    this.categoria = evento.target.value;
+  }
+  
+  
   _handleMudancaTitulo(evento) {//Como ele é um handle e está sendo disparado através de um evento, ele vai ter um parâmetro com as informações do evento que foi disparado. Tenho o handle de título, que vai ser receber por parâmetro um evento e aí quero passar esse método como referência para o on change usar.
     evento.stopPropagation()
     //Toda vez que a gente dá um submit no formulário o comportamento padrão dele é recarregar a página, e tem vezes que não queremos recarregar, queremos que ela fique estável, porque já estou gerenciando todos os dados que preciso sem precisar recarregar a página.
@@ -23,12 +31,20 @@ export class FormularioCadastro extends Component {
   _criarNota(evento) {
     evento.preventDefault()
     evento.stopPropagation()
-    this.props.criarNota(this.titulo, this.texto)
+    this.props.criarNota(this.titulo, this.texto, this.categoria);
   }
 
   render() {
     return ( //Componente do jsx tem que devolver um único elemento pai. //Agora que tenho dois atributos sendo criados, dois atributos sendo preenchidos de acordo com os valores de mudança, quero chamar no submit form a criação de um novo card, então vou também criar esse evento. Form cadastro vou chamar o onSubmit, também vou associar para um criar card, vou chamar para o this criar card. Ou criar nota. Na hora de criar a nota vou ter que fazer a associação para saber quem é o this, para ter acesso às propriedades de título e texto que a gente já salvou.
       <form className="form-cadastro" onSubmit={this._criarNota.bind(this)}> 
+        <select 
+          onChange={this._handleMudancaCategoria.bind(this)}
+          className="form-cadastro_input">
+          <option>Sem categoria</option>
+          {this.props.categorias.map(categoria =>{
+            return <option>{categoria}</option>
+          })}
+        </select>
         <input
           type="text"
           placeholder="Título"

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import './style.css'
-import './'
 
 export class FormularioCadastro extends Component {
   constructor(props) {//Quero salvar essa informação em algum outro lugar para quando vier no form e chamar o submission form. Para isso, vou ter que guardar o handle mudança de título, esse evento target value em alguma variável, algum atributo propriedade desse formulário de cadastro. A gente tem que ter nosso método construtor e nele a gente vai declarar as propriedades e atributos dessa classe.
@@ -8,9 +7,23 @@ export class FormularioCadastro extends Component {
     this.titulo = '' 
     this.texto = ''
     this.categoria = "Sem categoria"
+    this.state = {categorias:[]}
+    this._novasCategorias = this._novasCategorias.bind(this);
   }
   //Vou declarar esses três métodos como sendo privados, já que não quero que nenhuma instância fora dessa classe consiga chamar. 
   
+  componentDidMount(){
+    this.props.categorias.inscrever(this._novasCategorias)
+  }
+
+  componentWillUnmount(){
+    this.props.categorias.desinscrever( this._novasCategorias);
+  }
+
+  _novasCategorias(categorias){
+    this.setState({...this.state, categorias})
+  }
+
   _handleMudancaCategoria(evento){
     evento.stopPropagation();
     this.categoria = evento.target.value;
@@ -41,8 +54,8 @@ export class FormularioCadastro extends Component {
           onChange={this._handleMudancaCategoria.bind(this)}
           className="form-cadastro_input">
           <option>Sem categoria</option>
-          {this.props.categorias.map(categoria =>{
-            return <option>{categoria}</option>
+          {this.state.categorias.map((categoria, index) =>{
+            return <option key={index}>{categoria}</option>
           })}
         </select>
         <input

@@ -59,9 +59,8 @@ class App extends Component {
     return ( //A gente coloca sempre quando são múltiplas linhas entre parênteses.
       <section className="conteudo">
         <FormularioCadastro 
-        categorias={this.categorias.categorias}
-    
-        criarNota={this.notas.criarNota} />  
+        categorias={this.categorias}
+        criarNota={this.notas.adicionarNota.bind(this.notas)} />  
         {
         /*É como se estivesse declarando, instanciando um novo formulário através do new, só que não usamos a palavra-chave new, porque o react tem outras coisas que vai fazer por trás dos panos.
         Estou falando que o formulário vai ter uma propriedade, por isso falei que propriedades têm um nome especial, não quis chamar esse this título de this propriedade porque aqui estou falando que meu formulário de cadastro tem uma propriedade do react que chama criar nota que estou associando ao criar nota. Já que ela é uma propriedade, vou receber como parâmetro do meu construtor, e aí o mais comum é chamar isso de props.
@@ -71,12 +70,12 @@ class App extends Component {
       }
         <main className="conteudo-principal">
           <ListaDeCategorias 
-            adicionarCategoria={this.categorias.adicionarCategoria}
-            categorias={this.categorias.categorias}
+            adicionarCategoria={this.categorias.adicionarCategoria.bind(this.categorias)}
+            categorias={this.categorias}
           />
           <ListaDeNotas 
-          apagarNota={this.notas.apagarNota}
-          notas={this.notas.notas} 
+          apagarNota={this.notas.apagarNota.bind(this.notas)}
+          notas={this.notas} 
           />
         </main>
       </section>

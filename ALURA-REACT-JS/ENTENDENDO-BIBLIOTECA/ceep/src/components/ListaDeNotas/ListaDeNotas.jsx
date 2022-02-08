@@ -3,15 +3,26 @@ import CardNota from '../CardNota'
 import './style.css'
 
 export class ListaDeNotas extends Component {
-  // constructor(props){
-  //   super(props)
-  // }
-  //inutil, o js faz isso só
+  constructor(){
+    super();
+    this.state = {notas:[]}
+    this._novasNotas = this._novasNotas.bind(this);
+  }
+
+  componentDidMount(){
+    this.props.notas.inscrever(this._novasNotas);
+  }
+  componentWillUnmount(){
+    this.props.notas.desinscrever(this._novasNotas);
+  }
+  _novasNotas(notas){
+    this.setState({...this.state,notas})
+  }
 
   render() {
     return (
       <ul className="lista-notas">
-        {this.props.notas.map((nota, index) => {
+        {this.state.notas.map((nota, index) => {
           // Quero iterar sobre um array de notas, e esse array vai exibir para mim, vai ter a própria nota que quero exibir.
           //Tudo que estiver entre chaves dentro do return, com essa sintaxe parecida com html, vai ser interpretado como JavaScript, e dessa maneira conseguimos colocar os loops e fazer as interações que a gente precisar, inclusive chamar funções e assim por diante.
           //O jsx é uma extensão do JavaScript, mas não me deixa fazer esse tipo de for. Tem algumas limitações. Não é tudo do JavaScript que você vai conseguir fazer. Se tiver uma função para chamar aqui dentro, poderia chamar numa boa. E se quero percorrer uma lista, ainda mais uma lista que me desse as categorias, posso usar um array e as funções de array para isso.

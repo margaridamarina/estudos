@@ -11,3 +11,5 @@ def singleNumber(nums: List[int])-> int:
       return num
 lista = [2,2,1]
 singleNumber(lista)
+
+#https://adevait.com/python/interview-questions

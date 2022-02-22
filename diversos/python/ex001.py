@@ -6,3 +6,5 @@ elif isinstance(obj, Document):
 elif
 obj.search()
 #This is the function used to search the object’s class.
+
+#https://adevait.com/python/interview-questions

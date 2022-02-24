@@ -1,0 +1,11 @@
+.DS_Store
+exercicios/teste/*
+*.png
+*.pdf
+*.mp3
+*.mp4
+*.jpg
+*.ogv
+*.m4v
+*.webm
+*.ico

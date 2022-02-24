@@ -18,16 +18,25 @@
 # The first line consists of an integer, , the size of each group.
 # The second line contains the unordered elements of the room number list.
 
-len_group = int(input())
+# len_group = int(input())
 
-rooms = list(map(int, input().split()))
-a = set()
-b = set()
-for room in rooms:
-  if room not in a:
-    a.add(room)
-    b.add(room)
-  elif room in a:
-    b.discard(room)
-b=list(b)
-print(b[0])
+# rooms = list(map(int, input().split()))
+# a = set()
+# b = set()
+# for room in rooms:
+#   if room not in a:
+#     a.add(room)
+#     b.add(room)
+#   elif room in a:
+#     b.discard(room)
+# b=list(b)
+# print(b[0])
+
+n = int(input());
+dic = {} 
+for x in input().split():
+  dic[x] = dic.get(x,0) + 1
+for key in dic:
+  if dic[key] != n: 
+    print(key)
+    break

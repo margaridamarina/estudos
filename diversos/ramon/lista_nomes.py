@@ -1,11 +1,3 @@
-str_nomes2 = """
-João Miguel Caetano
-Enzo Gabriel Silva
-Maria Clara Miranda
-Maria Júlia Melo
-Maria Eduarda Alves
-Maria Cecília Miranda
-"""
 str_nomes = """Miguel Caetano
 Arthur Miranda
 Heitor Moraes
@@ -34,7 +26,7 @@ Isabella Caetano"""
 def convert_string_to_list():
     li = str_nomes.split()
     return li
-# print(convert_string_to_list(str_nomes))
+# print(convert_string_to_list())
 
 def convert_list_to_dict():
   li = convert_string_to_list()
@@ -43,14 +35,16 @@ def convert_list_to_dict():
 dicionario = convert_list_to_dict()
 # print(dicionario)
 
-flipped = {}  
-for key, value in dicionario.items():
-    if value not in flipped:
-        flipped[value] = [key]
-    else:
-        flipped[value].append(key)
-print(flipped)
+def group_lastnames():
+    flipped = {}  
+    for key, value in dicionario.items():
+        if value not in flipped:
+            flipped[value] = [key]
+        else:
+            flipped[value].append(key)
+    return flipped
 
-# FUNCAO RECEBENDO PARAMETROS CERTOS
-# NOME COMPOSTO
-# ESCREVER TESTE
+if __name__ == "__main__":
+    print(
+        group_lastnames()
+    )

@@ -39,11 +39,8 @@ def get_names_as_list(input_strig):
             filtred_list.append(name)
     return filtred_list
 
-names_list = get_names_as_list(str_nomes)
 
-aggregated_dict = {}
-
-for name_as_string in names_list:
+def get_names(name_as_string):
     names = name_as_string.split(" ")
     first_name_list = []
     
@@ -51,15 +48,27 @@ for name_as_string in names_list:
         name = names[name_index]
         first_name_list.append(name)
 
-    first_name = " ".join(first_name_list)
-    last_name = names[-1]
-    
-    value_already_exists = aggregated_dict.get(last_name)
-    if value_already_exists:
-        aggregated_dict[last_name].append(first_name)
-    else:
-        aggregated_dict[last_name] = [first_name]
+    first_nameAAA = " ".join(first_name_list)
+    last_nameBBB = names[-1]
+    return (first_nameAAA, last_nameBBB)
 
-# print(aggregated_dict)
-for k,v in aggregated_dict.items():
-    print(f'[{k}]: {v}')
+def get_aggregated_dict(input_strig):
+    names_list = get_names_as_list(input_strig)
+    aggregated_dict = {}
+
+    for name_as_string in names_list:
+        first_name, last_name = get_names(name_as_string)
+
+        value_already_exists = aggregated_dict.get(last_name)
+        if value_already_exists:
+            aggregated_dict[last_name].append(first_name)
+        else:
+            aggregated_dict[last_name] = [first_name]
+    
+    return aggregated_dict
+
+if __name__ == "__main__":
+    aggregated_dict = get_aggregated_dict(str_nomes)
+    # print(aggregated_dict)
+    for k,v in aggregated_dict.items():
+        print(f'[{k}]: {v}')

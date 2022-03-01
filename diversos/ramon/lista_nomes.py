@@ -1,4 +1,11 @@
-str_nomes = """Miguel Caetano
+str_nomes= """
+João Miguel Caetano
+Enzo Gabriel Silva
+Maria Clara Miranda
+Maria Júlia Melo
+Maria Eduarda Alves
+Maria Cecília Miranda
+Miguel Caetano
 Arthur Miranda
 Heitor Moraes
 Helena Pereira
@@ -21,30 +28,38 @@ Manuela Moraes
 Cecília Alves
 Benício Pereira
 Júlia Melo
-Isabella Caetano"""
+Isabella Caetano
+"""
 
-def convert_string_to_list():
-    li = str_nomes.split()
-    return li
-# print(convert_string_to_list())
+def get_names_as_list(input_strig):
+    complete_list = input_strig.split('\n')
+    filtred_list = []
+    for name in complete_list:
+        if name.strip() != "":
+            filtred_list.append(name)
+    return filtred_list
 
-def convert_list_to_dict():
-  li = convert_string_to_list()
-  res_dict = {li[i]: li[i+1] for i in range(0, len(li), 2)}
-  return res_dict
-dicionario = convert_list_to_dict()
-# print(dicionario)
+names_list = get_names_as_list(str_nomes)
 
-def group_lastnames():
-    flipped = {}  
-    for key, value in dicionario.items():
-        if value not in flipped:
-            flipped[value] = [key]
-        else:
-            flipped[value].append(key)
-    return flipped
+aggregated_dict = {}
 
-if __name__ == "__main__":
-    print(
-        group_lastnames()
-    )
+for name_as_string in names_list:
+    names = name_as_string.split(" ")
+    first_name_list = []
+    
+    for name_index in range(len(names) - 1):
+        name = names[name_index]
+        first_name_list.append(name)
+
+    first_name = " ".join(first_name_list)
+    last_name = names[-1]
+    
+    value_already_exists = aggregated_dict.get(last_name)
+    if value_already_exists:
+        aggregated_dict[last_name].append(first_name)
+    else:
+        aggregated_dict[last_name] = [first_name]
+
+# print(aggregated_dict)
+for k,v in aggregated_dict.items():
+    print(f'[{k}]: {v}')

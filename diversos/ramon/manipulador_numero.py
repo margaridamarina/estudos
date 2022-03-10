@@ -1,10 +1,4 @@
-
-from random import randint
-
-def gerar_numero_aleatorio():
-  n = randint(1,5)
-  print("funcao gerar numero foi chamada")
-  return n
+from funcao.gerador_numero_aleatorio import gerar_numero_aleatorio
 
 def dobra_numero_gerado(a):
   numerodobrado = a*2

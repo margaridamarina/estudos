@@ -7,6 +7,7 @@ class CalculadorDeImpostos:
 
 if __name__ == '__main__':
     from orcamento import Orcamento
+
     calculador = CalculadorDeImpostos()
     orcamento = Orcamento(500)
     calculador.realiza_calculo(orcamento, ISS())

@@ -14,3 +14,4 @@ precos_com_imposto2 = list(map(adicionar_imposto, precos))
 
 print(precos_com_imposto2)
 
+  

@@ -13,5 +13,5 @@ def function(a):
   func1(args)
   print(args[0], args[1])
 #This prints the value stored in the array of ‘a’
-
+function([3, 'a'])
 #https://www.careerride.com/python-interview-questions.aspx

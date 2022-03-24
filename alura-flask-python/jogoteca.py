@@ -27,6 +27,7 @@ usuarios = { usuario1.nickname : usuario1,
              usuario2.nickname : usuario2,
              usuario3.nickname : usuario3 }
 
+#Adicionando camada de criptografia
 app = Flask(__name__)
 app.secret_key = 'alura'
 

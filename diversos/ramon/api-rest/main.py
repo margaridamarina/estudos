@@ -1,5 +1,3 @@
-from src.server.instance import Server
-
-from src.controllers.books import *
+from src.controllers.books import server
 
 server.run()

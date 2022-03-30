@@ -1,6 +1,4 @@
-from flask import Flask
-from flask_restx import Api, Resource
-
+from flask_restx import Resource
 from src.server.instance import Server
 
 books_db = [
@@ -16,3 +14,11 @@ app, api = server.app, server.api
 class BookList(Resource):
     def get(self, ):
         return books_db
+
+    def post(self):
+        print("------------------")
+        print(api)
+        print(type(api))
+        response = api.payload
+        books_db.append(response)
+        return response, 200

@@ -1,6 +1,6 @@
 // Configurar o acesso ao banco de dados
 const Sequeliza = require('sequelize')
-const instancia = require('../../banco-de-dados')
+const instancia = require('../../bancoDeDados')
 
 const colunas = {
     empresa: {

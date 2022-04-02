@@ -1,8 +1,8 @@
 {
     "mysql": {
-        "banco-de-dados": "petshop",
+        "banco-de-dados": "some-mysql",
         "usuario": "root",
-        "senha": "123456",
+        "senha": "my-secret-pw",
         "host": "127.0.0.1"
     },
     "api": {

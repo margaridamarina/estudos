@@ -1,5 +1,5 @@
 // Configurar o acesso ao banco de dados
-const Sequeliza = require('sequelize')
+const Sequelize = require('sequelize')
 const instancia = require('../../bancoDeDados')
 
 const colunas = {

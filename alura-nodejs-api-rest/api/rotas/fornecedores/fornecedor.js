@@ -13,7 +13,7 @@ class Fornecedor {
         this.versao = versao
     }
 
-    async criar(){ //se comunicar com o banco de dados para pegar a informacao e persistir
+    async criar() { //se comunicar com o banco de dados para pegar a informacao e persistir
         const resultado = await TabelaFornecedor.inserir({
             empresa: this.empresa, 
             email: this.email,
@@ -24,6 +24,16 @@ class Fornecedor {
         this.dataCriacao = resultado.dataCriacao
         this.dataAtualizacao = resultado.dataAtualizacao
         this.versao = resultado.versao
+    }
+
+    async carregar() { //pegar o fornecedor
+        const fornecedorEncontrado = await TabelaFornecedor.pegarPorId(this.id)
+        this.empresa = fornecedorEncontrado.empresa //com os dados que recebemos do banco de dados precisamos pegar os valores e assimilar a nossa instancia para conseguirmos responder a requisicao
+        this.email = fornecedorEncontrado.email
+        this.categoria = fornecedorEncontrado.categoria
+        this.dataCriacao = fornecedorEncontrado.categoria
+        this.dataAtualizacao = fornecedorEncontrado.dataAtualizacao
+        this.versao = fornecedorEncontrado.versao
     }
 }
 

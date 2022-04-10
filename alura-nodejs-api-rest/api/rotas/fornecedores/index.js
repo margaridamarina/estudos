@@ -19,4 +19,22 @@ roteador.post('/', async (requisicao, resposta) => { //usar o metodo post para e
     )
 })
 
+roteador.get('/:idFornecedor', async (requisicao, resposta) => { //declarando parametro da nossa rota
+    try {
+        const id = requisicao.params.idFornecedor //a gente consegue acessar dentro dessa funcao do get o id do nosso fornecedor pelos parametros
+    const fornecedor = new Fornecedor({id: id}) //instanciar classe do fornecedor, passando como parametro um objeto
+    await fornecedor.carregar()
+    resposta.send(
+        JSON.stringify(fornecedor)
+    )
+    } catch (erro) {
+        resposta.send(
+            JSON.stringify({
+                mensagem: erro.message
+            })
+        )
+    }
+})
+
+
 module.exports = roteador

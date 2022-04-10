@@ -4,5 +4,9 @@ const Modelo = require('./modeloTabelaFornecedor') //retornar dados que estao no
 module.exports = {
     listar () {
         return Modelo.findAll()
+    },
+
+    inserir (fornecedor) {
+        return Modelo.create(fornecedor)
     }
 } 

@@ -10,9 +10,13 @@ roteador.get('/', async (requisicao, resposta) => { //como vamos nos comuncicar 
     )
 })
 
-roteador.post('/', (requisicao, resposta) => { 
+roteador.post('/', async (requisicao, resposta) => { //usar o metodo post para executar uma acao que altera a nossa colecao inteira de documentos, inserir um dado novo 
     const dadosRecebidos = requisicao.body
-    const fornecedor = new Fornecedor(dadosRecebidos) 
+    const fornecedor = new Fornecedor(dadosRecebidos)
+    await fornecedor.criar() 
+    resposta.send(
+        JSON.stringify(fornecedor)
+    )
 })
 
 module.exports = roteador

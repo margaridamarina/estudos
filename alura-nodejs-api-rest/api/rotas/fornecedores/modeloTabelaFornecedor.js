@@ -1,10 +1,10 @@
-// Configurar o acesso ao banco de dados
+// Configurar o acesso ao banco de dados da nossa tabela
 const Sequelize = require('sequelize')
 const instancia = require('../../bancoDeDados')
 
 const colunas = {
     empresa: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING, //usando biblioteca sequelize para declarar tipos
         allowNull: false, //obrigatória
     },
     email: {
@@ -19,8 +19,8 @@ const colunas = {
 
 const opcoes = {
     freezeTableName: true, //congelar e nao alterar o nome na tabela
-    tableName: 'fornecedores', 
-    timestamps: true,
+    tableName: 'fornecedores', //nome da tabela no mysql
+    timestamps: true, //colunas relacionadas a data
     createdAt: 'dataCriacao', //renomeando
     updateAt: 'dataAtualizacao',
     version: 'versao'

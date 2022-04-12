@@ -11,12 +11,21 @@ roteador.get('/', async (requisicao, resposta) => { //metodo get para obter os d
 })
 
 roteador.post('/', async (requisicao, resposta) => { //usar o metodo post para executar uma acao que altera a nossa colecao inteira de documentos, inserir um dado novo 
+   try {
     const dadosRecebidos = requisicao.body
     const fornecedor = new Fornecedor(dadosRecebidos)
     await fornecedor.criar() 
     resposta.send(
         JSON.stringify(fornecedor)
     )
+   } catch (erro) {
+        resposta.send(
+            JSON.stringify({
+                mensagem: erro.message
+            })
+        )
+   }
+
 })
 
 roteador.get('/:idFornecedor', async (requisicao, resposta) => { //metodo get para obter os dados //declarando parametro da nossa rota

@@ -15,6 +15,7 @@ class Fornecedor {
     }
 
     async criar() { //se comunicar com o banco de dados para pegar a informacao e persistir
+        this.validar()
         const resultado = await TabelaFornecedor.inserir({
             empresa: this.empresa, 
             email: this.email,
@@ -58,6 +59,18 @@ class Fornecedor {
 
     remover () { 
         return tabelaFornecedor.remover(this.id)
+    }
+
+    //adicionar validacao para rota de post para poder criar um fornecedor
+    //estamos recebendo dados e criando no banco de dados mas nao estamos fazendo uma validacao se os dados sao validos para conseguirmos cadastrar dados ou impedir que dados invalidos sejam enviados para nossa tabela
+    validar () {
+        const campos = ['empresa', 'email', 'categoria'] //campos obrigatorios
+        campos.forEach(campo => {
+            const valor = this[campo] //pegando valor do campo dinamicamente
+            if (typeof valor !== 'string' || valor.length === 0) { //verificar se valor é válido e preenchido
+                throw new Error (`O campo '${campo}' está inválido`)
+            }
+        })
     }
 }
 

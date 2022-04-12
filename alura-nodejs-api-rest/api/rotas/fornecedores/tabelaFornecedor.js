@@ -22,5 +22,20 @@ module.exports = {
         }
 
         return fornecedorEncontrado
+    },
+
+    atualizar (id, dadosParaAtualizar) {
+        return Modelo.update(
+            dadosParaAtualizar,
+            {
+                where: {id: id} //procurar fornecedor para atualizar usando o nosso id
+            }
+        )
+    },
+
+    remover (id) {
+        return Modelo.destroy({
+            where: {id: id}//procurar fornecedor para remover usando o nosso id
+        })
     }
 } 

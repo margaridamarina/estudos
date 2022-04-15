@@ -1,5 +1,7 @@
 //exportar metodos que usamos dentro da nossa aplicacao
 const Modelo = require('./modeloTabelaFornecedor') //retornar dados que estao no banco de dados da nossa api
+const NaoEncontrado = require('../../erros/naoEncontrado')
+
 
 module.exports = {
     listar () {
@@ -18,7 +20,7 @@ module.exports = {
         })
 
         if (!fornecedorEncontrado) {
-            throw new Error('Fornecedor não encontrado!')
+            throw new NaoEncontrado()
         }
 
         return fornecedorEncontrado

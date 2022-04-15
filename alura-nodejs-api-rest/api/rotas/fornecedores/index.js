@@ -1,7 +1,7 @@
 const roteador = require('express').Router() //agrupar rotas e exportar
-
 const TabelaFornecedor = require('./tabelaFornecedor') //consumir tabela dentro do arquivo do roteador
 const Fornecedor = require('./fornecedor') //usar classe Fornecedor nas nossas rotas
+const NaoEncontrado = require('../../erros/naoEncontrado')
 
 roteador.get('/', async (requisicao, resposta) => { //metodo get para obter os dados //como vamos nos comuncicar com um banco de dados com um serviço externo usamos promessa
     const resultados = await TabelaFornecedor.listar() //esperar o metodo terminar de executar
@@ -24,7 +24,7 @@ roteador.post('/', async (requisicao, resposta) => { //usar o metodo post para e
         resposta.status(400)
         resposta.send(
             JSON.stringify({
-                mensagem: erro.message
+                mensagem: erro.message,
             })
         )
    }
@@ -50,7 +50,7 @@ roteador.get('/:idFornecedor', async (requisicao, resposta) => { //metodo get pa
     }
 })
 
-roteador.put('/:idFornecedor', async (requisicao, resposta) => { //metodo put para colocar informacoes novas na api
+roteador.put('/:idFornecedor', async (requisicao, resposta, proximoMeader) => { //metodo put para colocar informacoes novas na api
     try {
         const id = requisicao.params.idFornecedor //pegar as informacoes que estamos recebendo
         const dadosRecebidos = requisicao.body //pegar o corpo da requisicao
@@ -59,13 +59,8 @@ roteador.put('/:idFornecedor', async (requisicao, resposta) => { //metodo put pa
         await fornecedor.atualizar()
         resposta.status(204)
         resposta.end() //qd atualizamos algo em uma api rest nao precisamos retornar nenhuma informacao para quem ta construindo a api, apenas informar que teve sucesso
-    } catch (erro) {
-        resposta.status(400)
-        resposta.send(
-            JSON.stringify({
-                mensagem: erro.message
-            })
-        )
+    } catch (erro) {//variavel erro para conseguir gerar e verificar o codigo de resposta correto
+       proximoMeader(erro)
     }
 })
 

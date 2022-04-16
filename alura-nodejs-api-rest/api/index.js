@@ -6,8 +6,25 @@ const NaoEncontrado = require('./erros/naoEncontrado')
 const CampoInvalido = require('./erros/campoInvalido')
 const DadosNaoFornecidos = require('./erros/dadosNaoFornecidos')
 const ValorNaoSuportado = require('./erros/valorNaoSuportado')
+const formatosAceitos = require('./serializador').formatosAceitos
 
 app.use(bodyParser.json()) //servir como plugin pro nosso app
+app.use((requisicao, resposta, proximoMiddleware) => {
+    let formatoRequisitado = requisicao.header('Accept')
+    
+    if(formatoRequisitado === '*/*') {
+        formatoRequisitado = 'application/json'
+    }
+
+    if (formatosAceitos.indexOf(formatoRequisitado) === -1) {
+        resposta.status(406)
+        resposta.end()
+        return
+    } 
+
+    resposta.setHeader('Content-Type', formatoRequisitado) //definir cabecalho, nome do cabecalho, valor do cabecalho
+    proximoMiddleware()
+})
 
 const roteador = require('./rotas/fornecedores')
 const res = require('express/lib/response')

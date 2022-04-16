@@ -2,7 +2,11 @@ const roteador = require('express').Router() //agrupar rotas e exportar
 const TabelaFornecedor = require('./tabelaFornecedor') //consumir tabela dentro do arquivo do roteador
 const Fornecedor = require('./fornecedor') //usar classe Fornecedor nas nossas rotas
 
-roteador.get('/', async (requisicao, resposta) => { //metodo get para obter os dados //como vamos nos comuncicar com um banco de dados com um serviço externo usamos promessa
+//metodo get para obter os dados 
+//como vamos nos comuncicar com um banco de dados com um serviço externo usamos promessa 
+//objeto request com propridades para acessar dados do lado do cliente e facilitar as requisicoes http 
+//objeto response com metodos para enviarmos dados para o lado cliente por meio das requisicoes http
+roteador.get('/', async (requisicao, resposta) => { 
     const resultados = await TabelaFornecedor.listar() //esperar o metodo terminar de executar
     resposta.status(200)
     resposta.send( //enviar resposta
@@ -10,7 +14,10 @@ roteador.get('/', async (requisicao, resposta) => { //metodo get para obter os d
     )
 })
 
-roteador.post('/', async (requisicao, resposta, proximoMeader) => { //usar o metodo post para executar uma acao que altera a nossa colecao inteira de documentos, inserir um dado novo 
+//usar o metodo post para executar uma acao que altera a nossa colecao inteira de documentos, inserir um dado novo 
+//proximoMiddleware - funcao que diz ao express js para continuar com o proximo middleware da pilha, é possivel empilhar varios middlewares pra realizar em camadas os processos de acesso aos dados
+//dessa forma garantimos que so havera acesso a partir da rota atraves do middleware, e com esse empilhamento fica bem mais facil restringir determinados acessos
+roteador.post('/', async (requisicao, resposta, proximoMiddleware) => { 
    try {
     const dadosRecebidos = requisicao.body
     const fornecedor = new Fornecedor(dadosRecebidos)
@@ -20,12 +27,12 @@ roteador.post('/', async (requisicao, resposta, proximoMeader) => { //usar o met
         JSON.stringify(fornecedor)
     )
    } catch (erro) {
-        proximoMeader(erro)
+        proximoMiddleware(erro)
    }
 
 })
 
-roteador.get('/:idFornecedor', async (requisicao, resposta, proximoMeader) => { //metodo get para obter os dados //declarando parametro da nossa rota
+roteador.get('/:idFornecedor', async (requisicao, resposta, proximoMiddleware) => { //metodo get para obter os dados //declarando parametro da nossa rota
     try {
         const id = requisicao.params.idFornecedor //a gente consegue acessar dentro dessa funcao do get o id do nosso fornecedor pelos parametros
         const fornecedor = new Fornecedor({id: id}) //instanciar classe do fornecedor, passando como parametro um objeto
@@ -35,11 +42,11 @@ roteador.get('/:idFornecedor', async (requisicao, resposta, proximoMeader) => { 
             JSON.stringify(fornecedor)
         )
     } catch (erro) {
-        proximoMeader(erro)
+        proximoMiddleware(erro)
     }
 })
 
-roteador.put('/:idFornecedor', async (requisicao, resposta, proximoMeader) => { //metodo put para colocar informacoes novas na api
+roteador.put('/:idFornecedor', async (requisicao, resposta, proximoMiddleware) => { //metodo put para colocar informacoes novas na api
     try {
         const id = requisicao.params.idFornecedor //pegar as informacoes que estamos recebendo
         const dadosRecebidos = requisicao.body //pegar o corpo da requisicao
@@ -49,11 +56,11 @@ roteador.put('/:idFornecedor', async (requisicao, resposta, proximoMeader) => { 
         resposta.status(204)
         resposta.end() //qd atualizamos algo em uma api rest nao precisamos retornar nenhuma informacao para quem ta construindo a api, apenas informar que teve sucesso
     } catch (erro) {//variavel erro para conseguir gerar e verificar o codigo de resposta correto
-       proximoMeader(erro)
+        proximoMiddleware(erro)
     }
 })
 
-roteador.delete('/:idFornecedor',async (requisicao, resposta, proximoMeader) => {
+roteador.delete('/:idFornecedor',async (requisicao, resposta, proximoMiddleware) => {
     try {
         const id = requisicao.params.idFornecedor //a gente consegue acessar dentro dessa funcao do get o id do nosso fornecedor pelos parametros
         const fornecedor = new Fornecedor({id: id}) //instanciar classe do fornecedor, passando como parametro um objeto
@@ -62,7 +69,7 @@ roteador.delete('/:idFornecedor',async (requisicao, resposta, proximoMeader) => 
         resposta.status(204)
         resposta.end() //se a requisicao terminar e nao tivermos nenhum erro, foi um sucesso
     } catch (erro) {
-        proximoMeader(erro)
+        proximoMiddleware(erro)
     }
 })
 

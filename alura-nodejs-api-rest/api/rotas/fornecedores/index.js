@@ -1,7 +1,6 @@
 const roteador = require('express').Router() //agrupar rotas e exportar
 const TabelaFornecedor = require('./tabelaFornecedor') //consumir tabela dentro do arquivo do roteador
 const Fornecedor = require('./fornecedor') //usar classe Fornecedor nas nossas rotas
-const NaoEncontrado = require('../../erros/naoEncontrado')
 
 roteador.get('/', async (requisicao, resposta) => { //metodo get para obter os dados //como vamos nos comuncicar com um banco de dados com um serviço externo usamos promessa
     const resultados = await TabelaFornecedor.listar() //esperar o metodo terminar de executar
@@ -11,7 +10,7 @@ roteador.get('/', async (requisicao, resposta) => { //metodo get para obter os d
     )
 })
 
-roteador.post('/', async (requisicao, resposta) => { //usar o metodo post para executar uma acao que altera a nossa colecao inteira de documentos, inserir um dado novo 
+roteador.post('/', async (requisicao, resposta, proximoMeader) => { //usar o metodo post para executar uma acao que altera a nossa colecao inteira de documentos, inserir um dado novo 
    try {
     const dadosRecebidos = requisicao.body
     const fornecedor = new Fornecedor(dadosRecebidos)
@@ -21,17 +20,12 @@ roteador.post('/', async (requisicao, resposta) => { //usar o metodo post para e
         JSON.stringify(fornecedor)
     )
    } catch (erro) {
-        resposta.status(400)
-        resposta.send(
-            JSON.stringify({
-                mensagem: erro.message,
-            })
-        )
+        proximoMeader(erro)
    }
 
 })
 
-roteador.get('/:idFornecedor', async (requisicao, resposta) => { //metodo get para obter os dados //declarando parametro da nossa rota
+roteador.get('/:idFornecedor', async (requisicao, resposta, proximoMeader) => { //metodo get para obter os dados //declarando parametro da nossa rota
     try {
         const id = requisicao.params.idFornecedor //a gente consegue acessar dentro dessa funcao do get o id do nosso fornecedor pelos parametros
         const fornecedor = new Fornecedor({id: id}) //instanciar classe do fornecedor, passando como parametro um objeto
@@ -41,12 +35,7 @@ roteador.get('/:idFornecedor', async (requisicao, resposta) => { //metodo get pa
             JSON.stringify(fornecedor)
         )
     } catch (erro) {
-        resposta.status(404)
-        resposta.send(
-            JSON.stringify({
-                mensagem: erro.message
-            })
-        )
+        proximoMeader(erro)
     }
 })
 
@@ -64,7 +53,7 @@ roteador.put('/:idFornecedor', async (requisicao, resposta, proximoMeader) => { 
     }
 })
 
-roteador.delete('/:idFornecedor',async (requisicao, resposta) => {
+roteador.delete('/:idFornecedor',async (requisicao, resposta, proximoMeader) => {
     try {
         const id = requisicao.params.idFornecedor //a gente consegue acessar dentro dessa funcao do get o id do nosso fornecedor pelos parametros
         const fornecedor = new Fornecedor({id: id}) //instanciar classe do fornecedor, passando como parametro um objeto
@@ -73,12 +62,7 @@ roteador.delete('/:idFornecedor',async (requisicao, resposta) => {
         resposta.status(204)
         resposta.end() //se a requisicao terminar e nao tivermos nenhum erro, foi um sucesso
     } catch (erro) {
-        resposta.status(404)
-        resposta.send(
-            JSON.stringify({
-                mensagem: erro.message
-            })
-        )
+        proximoMeader(erro)
     }
 })
 

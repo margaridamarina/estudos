@@ -1,6 +1,8 @@
 //representar no codigo o Fornecedor
 const tabelaFornecedor = require('./tabelaFornecedor')
 const TabelaFornecedor = require('./tabelaFornecedor')
+const CampoInvalido = require('../../erros/campoInvalido')
+const DadosNaoFornecidos = require('../../erros/dadosNaoFornecidos')
 
 class Fornecedor {
     //pegar dados na hora de instanciar a classe e assimilar a nossa instancia temos que criar o metodo que constroi a classe
@@ -51,7 +53,7 @@ class Fornecedor {
         })
         
         if (Object.keys(dadosParaAtualizar).length === 0) {
-            throw new Error('Não foram fornecidos dados para atualizar!')
+            throw new DadosNaoFornecidos()
         }
         
         await tabelaFornecedor.atualizar(this.id, dadosParaAtualizar) //como vai retornar uma promessa pq vai se comunicar com o banco de dados, colocamos um await
@@ -68,7 +70,7 @@ class Fornecedor {
         campos.forEach(campo => {
             const valor = this[campo] //pegando valor do campo dinamicamente
             if (typeof valor !== 'string' || valor.length === 0) { //verificar se valor é válido e preenchido
-                throw new Error (`O campo '${campo}' está inválido`)
+                throw new CampoInvalido(campo)
             }
         })
     }

@@ -15,7 +15,15 @@ class Serializador {
     }
 }
 
+class SerializadorFornecedor extends Serializador {
+    constructor(contentType) {
+        super() //chama o construtor da classe que estamos estendendo
+        this.contentType = contentType
+    }
+}
+
 module.exports = {
     Serializador: Serializador,
+    SerializadorFornecedor: SerializadorFornecedor,
     formatosAceitos: ['application/json']
 }

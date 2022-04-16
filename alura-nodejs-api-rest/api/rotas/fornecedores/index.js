@@ -1,6 +1,7 @@
 const roteador = require('express').Router() //agrupar rotas e exportar
 const TabelaFornecedor = require('./tabelaFornecedor') //consumir tabela dentro do arquivo do roteador
 const Fornecedor = require('./fornecedor') //usar classe Fornecedor nas nossas rotas
+const SerializadorFornecedor = require('../../serializador').SerializadorFornecedor
 
 //metodo get para obter os dados 
 //como vamos nos comuncicar com um banco de dados com um serviço externo usamos promessa 
@@ -9,8 +10,9 @@ const Fornecedor = require('./fornecedor') //usar classe Fornecedor nas nossas r
 roteador.get('/', async (requisicao, resposta) => { 
     const resultados = await TabelaFornecedor.listar() //esperar o metodo terminar de executar
     resposta.status(200)
+    const serializador = new SerializadorFornecedor(resposta.getHeader('Content-Type'))
     resposta.send( //enviar resposta
-        JSON.stringify(resultados) //retornar resposta
+        serializador.serializar(resultados) //retornar resposta
     )
 })
 
@@ -23,8 +25,9 @@ roteador.post('/', async (requisicao, resposta, proximoMiddleware) => {
     const fornecedor = new Fornecedor(dadosRecebidos)
     await fornecedor.criar() 
     resposta.status(201)
+    const serializador = new SerializadorFornecedor(resposta.getHeader('Content-Type'))
     resposta.send(
-        JSON.stringify(fornecedor)
+        serializador.serializar(fornecedor) //retornar resposta
     )
    } catch (erro) {
         proximoMiddleware(erro)
@@ -38,8 +41,9 @@ roteador.get('/:idFornecedor', async (requisicao, resposta, proximoMiddleware) =
         const fornecedor = new Fornecedor({id: id}) //instanciar classe do fornecedor, passando como parametro um objeto
         await fornecedor.carregar()
         resposta.status(200)
+        const serializador = new SerializadorFornecedor(resposta.getHeader('Content-Type'))
         resposta.send(
-            JSON.stringify(fornecedor)
+            serializador.serializar(fornecedor)
         )
     } catch (erro) {
         proximoMiddleware(erro)

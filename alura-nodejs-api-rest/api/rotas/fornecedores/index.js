@@ -80,5 +80,7 @@ roteador.delete('/:idFornecedor',async (requisicao, resposta, proximoMiddleware)
     }
 })
 
+const roteadorProdutos = require('./produtos')
+roteador.use('/:idFornecedor/produtos', roteadorProdutos)
 
 module.exports = roteador

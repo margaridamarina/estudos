@@ -9,7 +9,7 @@ class Serializador {
     
     serializar(dados){
         if (this.contentType === 'application/json') {
-            return this.json(this.filtrarObjeto(dados)) //assim mandamos os nossos dados direto para o nosso metodo json salvar em json
+            return this.json(this.filtrar(dados)) //assim mandamos os nossos dados direto para o nosso metodo json salvar em json
         }
 
         throw new ValorNaoSuportado(this.contentType)
@@ -23,6 +23,17 @@ class Serializador {
             }
         })
         return novoObjeto
+    }
+
+    filtrar(dados){//como listar retorna uma lista precisamos tratar essa lista
+        if(Array.isArray(dados)){ //verifica se a variavel dados é um array
+            dados = dados.map(item => {
+                return this.filtrarObjeto(item)  //o map vai passar uma funcao que vai executar para cada item da lista so que vai pegar o resultado da funcao e criar uma lista a partir dela
+        })
+        } else {
+            dados = this.filtrarObjeto(dados)
+        }
+        return dados
     }
 }
 

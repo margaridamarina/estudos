@@ -4,8 +4,11 @@ const NaoEncontrado = require('../../erros/naoEncontrado')
 
 
 module.exports = {
-    listar () {
-        return Modelo.findAll() //retornando os dados como instancias do sequelize
+    listar () { 
+        return Modelo.findAll({raw:true}) //raw vai limpar e deixar o objeto puro como objeto Javascript
+        //chamando diretamento o metodo findAll do sequelize
+        //retornando os dados como instancias do sequelize 
+        //isso dificulta para filtrarmos pq como é uma instancia do sequelize vai vir com varios metodos e propriedades que nao utilizamos
     },
 
     inserir (fornecedor) {

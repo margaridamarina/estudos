@@ -7,6 +7,7 @@ const CampoInvalido = require('./erros/campoInvalido')
 const DadosNaoFornecidos = require('./erros/dadosNaoFornecidos')
 const ValorNaoSuportado = require('./erros/valorNaoSuportado')
 const formatosAceitos = require('./serializador').formatosAceitos
+const SerializadorErro = require('./serializador').SerializadorErro
 
 app.use(bodyParser.json()) //servir como plugin pro nosso app
 app.use((requisicao, resposta, proximoMiddleware) => {
@@ -43,10 +44,10 @@ app.use((erro, requisicao, resposta, proximoMiddleware) => {
     if(erro instanceof ValorNaoSuportado) {
         status = 406 //tipo de valor que o cliente pede nao é suportado pela nossa api
     }
-
+    const serializador = new SerializadorErro(resposta.getHeader('Content-Type'))
     resposta.status(status)
     resposta.send(
-        JSON.stringify({
+        serializador.serializar({
             mensagem: erro.message,
             id: erro.idErro
         })

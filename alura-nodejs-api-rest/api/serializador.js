@@ -1,4 +1,5 @@
 const ValorNaoSuportado = require('./erros/valorNaoSuportado')
+const jsontoxml = require('jsontoxml')
 
 //tratar dados
 class Serializador {
@@ -7,9 +8,28 @@ class Serializador {
     }
     //para saber o tipo de conteudo que o frontend vai aceitar ou esta pedindo > vai em headers na aba de atualizacao (put ou post)> content-type
     
+    xml(dados){
+        let tag = this.tagSingular
+        if (Array.isArray(dados)) {
+            tag = this.tagPlural
+            dados = dados.map((item)=>{ //metodo em que conseguimos executar uma funcao para cada item da lista e pra cada item executamos a funcao e o resultado da funcao forma uma nova lista
+                return {
+                    [this.tagSingular]: item
+                }
+            })
+        }
+        return jsontoxml({[tag]:dados})
+    }
+
     serializar(dados){
+        dados = this.filtrar(dados)
+
         if (this.contentType === 'application/json') {
-            return this.json(this.filtrar(dados)) //assim mandamos os nossos dados direto para o nosso metodo json salvar em json
+            return this.json(dados) //assim mandamos os nossos dados direto para o nosso metodo json salvar em json
+        }
+
+        if (this.contentType === 'application/xml') {
+            return this.xml(dados)
         }
 
         throw new ValorNaoSuportado(this.contentType)
@@ -46,6 +66,8 @@ class SerializadorFornecedor extends Serializador {
             'empresa',
             'categoria'
         ].concat(camposExtras || [])
+        this.tagSingular = 'Fornecedor'
+        this.tagPlural = 'Fornecedores'
     }
 }
 
@@ -57,6 +79,8 @@ class SerializadorErro extends Serializador {
             'id',
             'mensagem'
         ].concat(camposExtras || [])
+        this.tagSingular = 'Erro'
+        this.tagPlural = 'Erros'
     }
 }
 
@@ -64,5 +88,5 @@ module.exports = {
     Serializador: Serializador,
     SerializadorFornecedor: SerializadorFornecedor,
     SerializadorErro: SerializadorErro,
-    formatosAceitos: ['application/json']
+    formatosAceitos: ['application/json', 'application/xml']
 }

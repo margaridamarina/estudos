@@ -5,7 +5,7 @@ const NaoEncontrado = require('../../erros/naoEncontrado')
 
 module.exports = {
     listar () {
-        return Modelo.findAll()
+        return Modelo.findAll() //retornando os dados como instancias do sequelize
     },
 
     inserir (fornecedor) {

@@ -1,8 +1,11 @@
-const roteador = require('express').Router()
+const roteador = require('express').Router({mergeParams:true})
+const tabela = require('./tabelaProduto')
 
-roteador.get('/', (requisicao, resposta) => {
+
+roteador.get('/', async (requisicao, resposta) => {
+    const produtos = await tabela.listar(requisicao.params.idFornecedor)
     resposta.send(
-        JSON.stringify([])
+        JSON.stringify(produtos)
     )
 })
 

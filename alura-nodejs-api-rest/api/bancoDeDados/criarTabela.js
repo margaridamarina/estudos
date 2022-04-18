@@ -1,8 +1,16 @@
 //pegar configuracoes do modelo de tabela e criar no banco de dados
 
-const ModeloTabela = require('../rotas/fornecedores/modeloTabelaFornecedor')
+const modelos = [
+    require('../rotas/fornecedores/modeloTabelaFornecedor'),
+    require('../rotas/fornecedores/produtos/modeloTabelaProdutos')
+]
 
-ModeloTabela //sincronizar configuracoes
-    .sync()
-    .then(() => console.log('Tabela criada com sucesso')) //executar quando a promessa acabar
-    .catch(console.log) //caso aconteca erro pegar com o metodo catch
+async function criarTabelas () {
+    for (let contador = 0; contador < modelos.length; contador ++) {
+        const modelo = modelos[contador]
+        await modelo.sync()
+    }
+
+}
+
+criarTabelas()

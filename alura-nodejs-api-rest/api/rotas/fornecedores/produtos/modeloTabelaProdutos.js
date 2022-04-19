@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 
-const instancia = require('../../../bancoDeDados')
+const instancia = require('../../../bancoDeDados') //para exportar o objeto precisamos usar a instancia do sequelize
 
 const colunas = {
     titulo: {
@@ -19,7 +19,7 @@ const colunas = {
     fornecedor: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: {
+        references: {//associar a tabela de fornecedores
             model: require('../modeloTabelaFornecedor'),
             key: 'id'
         }
@@ -36,4 +36,4 @@ const opcoes = {
     version: 'versao'
 }
 
-module.exports = instancia.define('produto', colunas, opcoes)
+module.exports = instancia.define('produto', colunas, opcoes)//nome do modelo, colunas e configuracoes

@@ -80,7 +80,10 @@ roteador.delete('/:idFornecedor',async (requisicao, resposta, proximoMiddleware)
     }
 })
 
-const roteadorProdutos = require('./produtos')
-roteador.use('/:idFornecedor/produtos', roteadorProdutos)
+const roteadorProdutos = require('./produtos') //encaixar roteador de produtos dentro de fornecedores
+roteador.use('/:idFornecedor/produtos', roteadorProdutos) 
+//aplicar essas rotas dentro das rotas de fornecedores 
+//colecao de produtos que pertence a esse unico fornecedor
+//primeiro parametro rota e segundo parametro roteador
 
 module.exports = roteador

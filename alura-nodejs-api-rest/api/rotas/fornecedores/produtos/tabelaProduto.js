@@ -1,6 +1,8 @@
+//funcao dal que exporta todos os nossos metodos e funcoes para se comunicar com o banco de dados
+
+const { inserir } = require('../tabelaFornecedor')
 const Modelo = require('./modeloTabelaProdutos')
 
-//exportar objeto com todas as funcoes do nosso dal
 module.exports = {
     listar(idFornecedor) {
         return Modelo.findAll({
@@ -8,5 +10,9 @@ module.exports = {
                 fornecedor: idFornecedor
             }
         })
+    },
+
+    inserir(dados){
+        return Modelo.create(dados)
     }
 }

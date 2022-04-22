@@ -36,16 +36,20 @@ roteador.delete('/:id', async (requisicao, resposta) => {
     resposta.end()
 })
 //Obter detalhes de um produto
-roteador.get('/:id', async(requisicao, resposta) => {
-    const dados = {
-        id: requisicao.params.id,
-        fornecedor: requisicao.fornecedor.id
+roteador.get('/:id', async(requisicao, resposta, proximoMiddleware) => {
+    try{
+        const dados = {
+            id: requisicao.params.id,
+            fornecedor: requisicao.fornecedor.id
+        }
+        const produto = new Produto(dados)
+        await produto.carregar()
+        resposta.send(
+            JSON.stringify(produto)
+        )
+    } catch(erro){
+        proximoMiddleware(erro)
     }
-    const produto = new Produto(dados)
-    await produto.carregar()
-    resposta.send(
-        JSON.stringify(produto)
-    )
 })
 
 module.exports = roteador //usar roteador

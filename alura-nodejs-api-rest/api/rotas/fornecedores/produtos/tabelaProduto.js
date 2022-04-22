@@ -23,5 +23,21 @@ module.exports = {
                 fornecedor: idFornecedor
             }
         })
+    },
+
+    async pegarPorId(idProduto, idFornecedor){
+        const encontrado = await Modelo.findOne({
+            where:{
+                id: idProduto,
+                fornecedor: idFornecedor
+            },
+            raw: true //para retornar um objeto puro do javascript e nao uma instancia do Sequelize
+        })
+
+        if(!encontrado){
+           throw new Error('Produto não foi encontrado!')
+        }
+
+        return encontrado
     }
 }

@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.20.0",
+    "cjs-loader": "^0.1.0",
     "config": "^3.3.7",
     "express": "^4.17.3",
     "jsontoxml": "^1.0.1",

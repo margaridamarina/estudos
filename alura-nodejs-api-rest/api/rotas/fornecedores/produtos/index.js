@@ -1,13 +1,17 @@
 const roteador = require('express').Router({mergeParams:true})//trazendo os parametros do roteador de cima
 const Tabela = require('./tabelaProduto')
 const Produto = require('./produto')
+const Serializador = require('../../../serializador').SerializadorProduto
 
 //declarando primeira rota
 //obter dados da api - metodo get
 roteador.get('/', async (requisicao, resposta) => {
     const produtos = await Tabela.listar(requisicao.fornecedor.id) //utilizar o dal dentro da rota
+    const serializador = new Serializador(
+        resposta.getHeader('Content-Type')
+    )
     resposta.send( //enviar resposta
-        JSON.stringify(produtos) //transformar dados em json
+        serializador.serializar(produtos) //transformar dados em json
     )
 })
 //mudar informacoes da colecao de documentos
@@ -18,8 +22,13 @@ roteador.post('/', async (requisicao, resposta, proximoMiddleware) => {
         const dados = Object.assign({}, corpo, {fornecedor: idFornecedor}) //juntando variaveis em uma so
         const produto = new Produto(dados)
         await produto.criar()
+        const serializador = new Serializador(
+            resposta.getHeader('Content-Type')
+        )
         resposta.status(201)
-        resposta.send(produto)
+        resposta.send(
+            serializador.serializar(produto)
+        )
     } catch(erro) {
         proximoMiddleware(erro)
     }
@@ -44,8 +53,12 @@ roteador.get('/:id', async(requisicao, resposta, proximoMiddleware) => {
         }
         const produto = new Produto(dados)
         await produto.carregar()
+        const serializador = new Serializador(
+            resposta.getHeader('Content-Type'),
+            ['preco', 'estoque', 'fornecedor', 'dataCriacao', 'dataAtualizacao', 'versao']
+        )
         resposta.send(
-            JSON.stringify(produto)
+            serializador.serializar(produto)
         )
     } catch(erro){
         proximoMiddleware(erro)

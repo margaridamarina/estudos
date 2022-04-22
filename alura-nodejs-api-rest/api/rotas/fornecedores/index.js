@@ -81,7 +81,20 @@ roteador.delete('/:idFornecedor',async (requisicao, resposta, proximoMiddleware)
 })
 
 const roteadorProdutos = require('./produtos') //encaixar roteador de produtos dentro de fornecedores
-roteador.use('/:idFornecedor/produtos', roteadorProdutos) 
+
+const verificarFornecedor = async (requisicao, resposta, proximoMiddleware) => {
+    try{
+        const id = requisicao.params.idFornecedor
+        const fornecedor = new Fornecedor({id:id})
+        await fornecedor.carregar()
+        requisicao.fornecedor = fornecedor //injetar valores dentro da requisicao //pratica do express comum //estara disponivel por todas as rotas que vierem dps desse middleware
+        proximoMiddleware()
+    } catch(erro) {
+        proximoMiddleware(erro)
+    }
+}
+
+roteador.use('/:idFornecedor/produtos', verificarFornecedor, roteadorProdutos) 
 //aplicar essas rotas dentro das rotas de fornecedores 
 //colecao de produtos que pertence a esse unico fornecedor
 //primeiro parametro rota e segundo parametro roteador

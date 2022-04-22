@@ -11,14 +11,18 @@ roteador.get('/', async (requisicao, resposta) => {
     )
 })
 //mudar informacoes da colecao de documentos
-roteador.post('/', async (requisicao, resposta) => {
-    const idFornecedor = requisicao.params.idFornecedor 
-    const corpo = requisicao.body
-    const dados = Object.assign({}, corpo, {fornecedor: idFornecedor}) //juntando variaveis em uma so
-    const produto = new Produto(dados)
-    await produto.criar()
-    resposta.status(201)
-    resposta.send(produto)
+roteador.post('/', async (requisicao, resposta, proximoMiddleware) => {
+    try {
+        const idFornecedor = requisicao.params.idFornecedor 
+        const corpo = requisicao.body
+        const dados = Object.assign({}, corpo, {fornecedor: idFornecedor}) //juntando variaveis em uma so
+        const produto = new Produto(dados)
+        await produto.criar()
+        resposta.status(201)
+        resposta.send(produto)
+    } catch(erro) {
+        proximoMiddleware(erro)
+    }
 })
 
 roteador.delete('/:id', async (requisicao, resposta) => {

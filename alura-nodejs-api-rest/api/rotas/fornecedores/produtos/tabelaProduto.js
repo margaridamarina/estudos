@@ -2,6 +2,7 @@
 
 const { inserir } = require('../tabelaFornecedor')
 const Modelo = require('./modeloTabelaProdutos')
+const instancia = require('../../../bancoDeDados') //resolver problema de concorrencia na api onde 2 pessoas tentam atualiza-la ao mesmo tempo
 
 module.exports = {
     listar(idFornecedor) {
@@ -49,5 +50,19 @@ module.exports = {
                     where: dadosDoProduto
                 }
         )
+    },
+
+    subtrair(idProduto, idFornecedor, campo, quantidade){
+        return instancia.transaction(async transacao => {
+            const produto = await Modelo.findOne({//encontrar um dos nossos modelos
+                where: {//declarar caracteristicas do produto para saber onde encontra-lo
+                    id:idProduto,
+                    fornecedor:idFornecedor
+                }
+            })
+            produto[campo] = quantidade 
+            await produto.save() //pedindo pro sequelize salvar esse objeto no banco de dados
+            return produto
+        })
     }
 }

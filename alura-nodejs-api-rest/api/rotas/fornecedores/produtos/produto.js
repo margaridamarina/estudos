@@ -40,8 +40,8 @@ class Produto{
     apagar(){
         return Tabela.remover(this.id, this.fornecedor)
     }
-    //Obter detalhes de um produto
-    async carregar(){
+
+    async carregar(){ //Obter detalhes de um produto
         const produto = await Tabela.pegarPorId(this.id, this.fornecedor)
         this.titulo = produto.titulo
         this.preco = produto.preco
@@ -71,6 +71,15 @@ class Produto{
                 fornecedor: this.fornecedor
             },
             dadosParaAtualizar
+        )
+    }
+
+    diminuirEstoque(){
+        return Tabela.subtrair(
+            this.id,
+            this.fornecedor,
+            'estoque',
+            this.estoque
         )
     }
 }

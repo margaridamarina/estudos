@@ -3,10 +3,8 @@ const Tabela = require('./tabelaProduto')
 const Produto = require('./produto')
 const Serializador = require('../../../serializador').SerializadorProduto
 
-//declarando primeira rota
-//obter dados da api - metodo get
-roteador.get('/', async (requisicao, resposta) => {
-    const produtos = await Tabela.listar(requisicao.fornecedor.id) //utilizar o dal dentro da rota
+roteador.get('/', async (requisicao, resposta) => { //obter dados da api - metodo get
+    const produtos = await Tabela.listar(requisicao.fornecedor.id) //utilizar o dao dentro da rota
     const serializador = new Serializador(
         resposta.getHeader('Content-Type')
     )
@@ -14,8 +12,8 @@ roteador.get('/', async (requisicao, resposta) => {
         serializador.serializar(produtos) //transformar dados em json
     )
 })
-//mudar informacoes da colecao de documentos
-roteador.post('/', async (requisicao, resposta, proximoMiddleware) => {
+
+roteador.post('/', async (requisicao, resposta, proximoMiddleware) => { //mudar informacoes da colecao de documentos
     try {
         const idFornecedor = requisicao.fornecedor.id
         const corpo = requisicao.body
@@ -23,8 +21,12 @@ roteador.post('/', async (requisicao, resposta, proximoMiddleware) => {
         const produto = new Produto(dados)
         await produto.criar()
         const serializador = new Serializador(
-            resposta.getHeader('Content-Type')
+            resposta.getHeader('Content-Type') 
         )
+        resposta.set('ETag', produto.versao)//enriquecendo resposta do documento //primeiro cabecalho ETag,versao do documento
+        const timestamp = (new Date(produto.dataAtualizacao)).getTime() 
+        resposta.set('Last-Modified', timestamp)//cabecalho Last-Modified para data de atualizacao
+        resposta.set('Location', `/api/fornecedores/${produto.fornecedor}/produtos/${produto.id}`)//cabecalho Location para acessar mais informacoes do produto
         resposta.status(201)
         resposta.send(
             serializador.serializar(produto)
@@ -44,8 +46,8 @@ roteador.delete('/:id', async (requisicao, resposta) => {
     resposta.status(204)
     resposta.end()
 })
-//Obter detalhes de um produto
-roteador.get('/:id', async(requisicao, resposta, proximoMiddleware) => {
+
+roteador.get('/:id', async(requisicao, resposta, proximoMiddleware) => {  //Obter detalhes de um produto
     try{
         const dados = {
             id: requisicao.params.id,
@@ -57,6 +59,9 @@ roteador.get('/:id', async(requisicao, resposta, proximoMiddleware) => {
             resposta.getHeader('Content-Type'),
             ['preco', 'estoque', 'fornecedor', 'dataCriacao', 'dataAtualizacao', 'versao']
         )
+        resposta.set('ETag', produto.versao)//enriquecendo resposta do documento //primeiro cabecalho ETag,versao do documento
+        const timestamp = (new Date(produto.dataAtualizacao)).getTime() 
+        resposta.set('Last-Modified', timestamp)//cabecalho Last-Modified para data de atualizacao
         resposta.send(
             serializador.serializar(produto)
         )
@@ -77,6 +82,10 @@ roteador.put('/:id', async (requisicao, resposta, proximoMiddleware) => {
         )
         const produto = new Produto(dados)
         await produto.atualizar()
+        await produto.carregar() //ja que estamos alterando o produto, o id, o numero da versao e a data de atualizacao estao sendo alterados, entao precisamos pegar esse campo atualizado
+        resposta.set('ETag', produto.versao)//enriquecendo resposta do documento //primeiro cabecalho ETag,versao do documento
+        const timestamp = (new Date(produto.dataAtualizacao)).getTime() 
+        resposta.set('Last-Modified', timestamp)//cabecalho Last-Modified para data de atualizacao
         resposta.status(204)
         resposta.end()
     } catch(erro){
@@ -93,6 +102,10 @@ roteador.post('/:id/diminuir-estoque', async(requisicao, resposta, proximoMiddle
     await produto.carregar()
     produto.estoque = produto.estoque - requisicao.body.quantidade
     await produto.diminuirEstoque()
+    await produto.carregar() //ja que estamos alterando o produto, o id, o numero da versao e a data de atualizacao estao sendo alterados, entao precisamos pegar esse campo atualizado
+    resposta.set('ETag', produto.versao)//enriquecendo resposta do documento //primeiro cabecalho ETag,versao do documento
+    const timestamp = (new Date(produto.dataAtualizacao)).getTime() 
+    resposta.set('Last-Modified', timestamp)//cabecalho Last-Modified para data de atualizacao
     resposta.status(204)
     resposta.end()
    } catch(erro){

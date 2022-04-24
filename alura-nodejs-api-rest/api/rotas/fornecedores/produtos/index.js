@@ -70,6 +70,24 @@ roteador.get('/:id', async(requisicao, resposta, proximoMiddleware) => {  //Obte
     }
 })
 
+roteador.head('/:id', async(requisicao, resposta, proximoMiddleware) => {
+    try{
+        const dados = {
+            id: requisicao.params.id,
+            fornecedor: requisicao.fornecedor.id
+        }
+        const produto = new Produto(dados)
+        await produto.carregar()
+        resposta.set('ETag', produto.versao)//enriquecendo resposta do documento //primeiro cabecalho ETag,versao do documento
+        const timestamp = (new Date(produto.dataAtualizacao)).getTime() 
+        resposta.set('Last-Modified', timestamp)//cabecalho Last-Modified para data de atualizacao
+        resposta.status(200)
+        resposta.end()
+    } catch(erro){
+        proximoMiddleware(erro)
+    }
+})
+
 roteador.put('/:id', async (requisicao, resposta, proximoMiddleware) => {
     try{
         const dados = Object.assign(

@@ -3,6 +3,7 @@
 const { inserir } = require('../tabelaFornecedor')
 const Modelo = require('./modeloTabelaProdutos')
 const instancia = require('../../../bancoDeDados') //resolver problema de concorrencia na api onde 2 pessoas tentam atualiza-la ao mesmo tempo
+const NaoEncontrado = require('../../../erros/naoEncontrado')
 
 module.exports = {
     listar(idFornecedor) {
@@ -37,7 +38,7 @@ module.exports = {
         })
 
         if(!encontrado){
-           throw new Error('Produto não foi encontrado!')
+           throw new NaoEncontrado('Produto')
         }
 
         return encontrado

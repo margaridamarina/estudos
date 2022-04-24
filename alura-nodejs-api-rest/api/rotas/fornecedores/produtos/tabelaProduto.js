@@ -1,4 +1,4 @@
-//funcao dal que exporta todos os nossos metodos e funcoes para se comunicar com o banco de dados
+//funcao DAO(data access object) que exporta todos os nossos metodos e funcoes para se comunicar com o banco de dados
 
 const { inserir } = require('../tabelaFornecedor')
 const Modelo = require('./modeloTabelaProdutos')

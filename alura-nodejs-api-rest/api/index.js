@@ -27,12 +27,18 @@ app.use((requisicao, resposta, proximoMiddleware) => {
     proximoMiddleware()
 })
 
+app.use((requisicao, resposta, proximoMiddleware) => {
+    resposta.set('Access-Control-Allow-Origin', '*')
+    proximoMiddleware()
+})
+
 const roteador = require('./rotas/fornecedores')
 const res = require('express/lib/response')
 app.use('/api/fornecedores', roteador) //declarando primeira requisicao, consumir rota dentro do arquivo da api, passou um grupo de funcoes
 
 app.use((erro, requisicao, resposta, proximoMiddleware) => {
     let status = 500 //erro generico que representa problema na api que nao sabemos o que aconteceu
+    
     if(erro instanceof NaoEncontrado) {
         status = 404
     } 

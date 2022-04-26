@@ -33,8 +33,10 @@ app.use((requisicao, resposta, proximoMiddleware) => {
 })
 
 const roteador = require('./rotas/fornecedores')
-const res = require('express/lib/response')
 app.use('/api/fornecedores', roteador) //declarando primeira requisicao, consumir rota dentro do arquivo da api, passou um grupo de funcoes
+
+const roteadorV2 = require('./rotas/fornecedores/rotasV2')
+app.use('/api/v2/fornecedores', roteadorV2)
 
 app.use((erro, requisicao, resposta, proximoMiddleware) => {
     let status = 500 //erro generico que representa problema na api que nao sabemos o que aconteceu

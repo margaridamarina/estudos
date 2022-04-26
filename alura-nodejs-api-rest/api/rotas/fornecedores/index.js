@@ -3,6 +3,13 @@ const TabelaFornecedor = require('./tabelaFornecedor') //consumir tabela dentro 
 const Fornecedor = require('./fornecedor') //usar classe Fornecedor nas nossas rotas
 const SerializadorFornecedor = require('../../serializador').SerializadorFornecedor
 
+roteador.options('/', (requisicao, resposta) => {
+    resposta.set('Access-Control-Allow-Methods', 'GET, POST')
+    resposta.set('Access-Control-Allow-Headers', 'Content-Type')
+    resposta.status(204)
+    resposta.end()
+})
+
 //metodo get para obter os dados 
 //como vamos nos comuncicar com um banco de dados com um serviço externo usamos promessa 
 //objeto request com propridades para acessar dados do lado do cliente e facilitar as requisicoes http 
@@ -33,6 +40,13 @@ roteador.post('/', async (requisicao, resposta, proximoMiddleware) => {
         proximoMiddleware(erro)
    }
 
+})
+
+roteador.options('/:idFornecedor', (requisicao, resposta) => {
+    resposta.set('Access-Control-Allow-Methods', 'GET, PUT, DELETE')
+    resposta.set('Access-Control-Allow-Headers', 'Content-Type')
+    resposta.status(204)
+    resposta.end()
 })
 
 roteador.get('/:idFornecedor', async (requisicao, resposta, proximoMiddleware) => { //metodo get para obter os dados //declarando parametro da nossa rota

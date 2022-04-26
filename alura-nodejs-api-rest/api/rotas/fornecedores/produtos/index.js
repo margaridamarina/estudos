@@ -3,6 +3,14 @@ const Tabela = require('./tabelaProduto')
 const Produto = require('./produto')
 const Serializador = require('../../../serializador').SerializadorProduto
 
+roteador.options('/', (requisicao, resposta) => {
+    resposta.set('Access-Control-Allow-Methods', 'GET, POST')
+    resposta.set('Access-Control-Allow-Headers', 'Content-Type')
+    resposta.status(204)
+    resposta.end()
+})
+
+
 roteador.get('/', async (requisicao, resposta) => { //obter dados da api - metodo get
     const produtos = await Tabela.listar(requisicao.fornecedor.id) //utilizar o dao dentro da rota
     const serializador = new Serializador(
@@ -34,6 +42,13 @@ roteador.post('/', async (requisicao, resposta, proximoMiddleware) => { //mudar 
     } catch(erro) {
         proximoMiddleware(erro)
     }
+})
+
+roteador.options('/:id', (requisicao, resposta) => {
+    resposta.set('Access-Control-Allow-Methods', 'DELETE, GET, HEAD, PUT')
+    resposta.set('Access-Control-Allow-Headers', 'Content-Type')
+    resposta.status(204)
+    resposta.end()
 })
 
 roteador.delete('/:id', async (requisicao, resposta) => {
@@ -109,6 +124,13 @@ roteador.put('/:id', async (requisicao, resposta, proximoMiddleware) => {
     } catch(erro){
         proximoMiddleware(erro)
     }
+})
+
+roteador.options('/:id/diminuir-estoque', (requisicao, resposta) => {
+    resposta.set('Access-Control-Allow-Methods', 'POST')
+    resposta.set('Access-Control-Allow-Headers', 'Content-Type')
+    resposta.status(204)
+    resposta.end()
 })
 
 roteador.post('/:id/diminuir-estoque', async(requisicao, resposta, proximoMiddleware) => {
